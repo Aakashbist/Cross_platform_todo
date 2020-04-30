@@ -32,12 +32,14 @@ var app = {
             var _todo;
             if ($("input[type=checkbox]").is(
                 ":checked")) {
-                _todo = { item: todo.item, isComplete: true }
-                localStorage.setItem(updateID, JSON.stringify(_todo))
+                _todo = { item: todo.item, isComplete: this.checked }
+
             } else {
-                _todo = { item: todo.item, isComplete: false }
-                localStorage.setItem(updateID, JSON.stringify(_todo))
+                _todo = { item: todo.item, isComplete: this.checked }
+
             }
+            localStorage.setItem(updateID, JSON.stringify(_todo))
+            location.reload()
         });
         $(document).on("click", "#edit_btn", this.edit)
         $(document).on("click", "#delete_btn", this.delete)
@@ -66,17 +68,11 @@ var app = {
         navigator.geolocation.getCurrentPosition(this.onSuccess
             , this.onError, { timeout: 30000 })
         $("#update").hide()
+
         this.loadData();
     },
     onSuccess: function (position) {
-        alert('Latitude: ' + position.coords.latitude + '\n' +
-            'Longitude: ' + position.coords.longitude + '\n' +
-            'Altitude: ' + position.coords.altitude + '\n' +
-            'Accuracy: ' + position.coords.accuracy + '\n' +
-            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-            'Heading: ' + position.coords.heading + '\n' +
-            'Speed: ' + position.coords.speed + '\n' +
-            'Timestamp: ' + position.timestamp + '\n');
+        $("#lonlat").text("your lat and long is " + position.coords.latitude + " , " + position.coords.longitude)
     },
     onError: function (error) {
         alert('code: ' + error.code + '\n' +
@@ -100,16 +96,19 @@ var app = {
     },
     loadData: function () {
         var table = document.getElementById("myTable");
-
         for (var i = 0; i < localStorage.length; i++) {
             var todo = JSON.parse(localStorage.getItem(localStorage.key(i)))
+            var check = todo.isComplete ? "checked" : ""
+            var style = todo.isComplete ? "text-decoration:line-through" : " "
             table.innerHTML +=
-                `<td> <input class="form-check-input" type="checkbox"  data-value=${localStorage.key(i)}  id="checkBox"></td>
-                    <td>${todo.item}</td>
+                `<td> <input class="form-check-input" type="checkbox" ${check}  data-value=${localStorage.key(i)}  id="checkBox"></td>
+                    <td style=${style}>${todo.item}</td>
         <td>
         <button id="edit_btn" data-value=${localStorage.key(i)} class="btn btn-info"  Onclick="edit(${localStorage.key(i)})">edit</button>
         <button id="delete_btn" data-value=${localStorage.key(i)} class="btn btn-danger" Onclick="delete(${localStorage.key(i)})">delete</button>
         </td> `;
+
+
         }
     },
     handleSave: function () {
