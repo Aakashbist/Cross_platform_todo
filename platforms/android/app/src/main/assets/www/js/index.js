@@ -63,18 +63,26 @@ var app = {
     },
 
     deviceReadyListener: function () {
-        var xx = []
-        for (var i = 0; i < localStorage.length; i++) {
-            var todo = JSON.parse(localStorage.getItem(localStorage.key(i)))
-            xx.push(todo)
-        }
-        alert(xx)
+        navigator.geolocation.getCurrentPosition(this.onSuccess
+            , this.onError, { timeout: 30000 })
         $("#update").hide()
         this.loadData();
     },
-    checkboxEvent: function () {
-
+    onSuccess: function (position) {
+        alert('Latitude: ' + position.coords.latitude + '\n' +
+            'Longitude: ' + position.coords.longitude + '\n' +
+            'Altitude: ' + position.coords.altitude + '\n' +
+            'Accuracy: ' + position.coords.accuracy + '\n' +
+            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+            'Heading: ' + position.coords.heading + '\n' +
+            'Speed: ' + position.coords.speed + '\n' +
+            'Timestamp: ' + position.timestamp + '\n');
     },
+    onError: function (error) {
+        alert('code: ' + error.code + '\n' +
+            'message: ' + error.message + '\n');
+    },
+
     edit: function () {
         updateID = $(this).data("value")
         var todo = JSON.parse(localStorage.getItem(updateID))
@@ -99,7 +107,7 @@ var app = {
                 `<td> <input class="form-check-input" type="checkbox"  data-value=${localStorage.key(i)}  id="checkBox"></td>
                     <td>${todo.item}</td>
         <td>
-        <button id="edit_btn" data-value=${localStorage.key(i)} class="btn btn-info" Onclick="edit(${localStorage.key(i)})">edit</button>
+        <button id="edit_btn" data-value=${localStorage.key(i)} class="btn btn-info"  Onclick="edit(${localStorage.key(i)})">edit</button>
         <button id="delete_btn" data-value=${localStorage.key(i)} class="btn btn-danger" Onclick="delete(${localStorage.key(i)})">delete</button>
         </td> `;
         }

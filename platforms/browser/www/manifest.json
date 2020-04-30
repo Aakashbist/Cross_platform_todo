@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Todoapp",
+  "short_name": "Todoapp",
+  "version": "com.aakashbista.todoapp",
+  "description": "6867 Todo App",
+  "author": "Apache Cordova Team",
+  "icons": [],
+  "start_url": "index.html"
+}
