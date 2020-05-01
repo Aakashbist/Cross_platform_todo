@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is needed because [your reason]</string>
 	<key>NSMainNibFile~ipad</key>
 	<string/>
 	<key>UIRequiresFullScreen</key>
